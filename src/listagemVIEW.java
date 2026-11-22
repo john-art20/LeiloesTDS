@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -13,14 +14,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
-    /**
-     * Creates new form listagemVIEW
-     */
+    
+    
+    private ProdutosDTO product;
     public listagemVIEW() {
-        initComponents();
-        listarProdutos();
-    }
+    initComponents();
+    this.product = new ProdutosDTO();
+    listarProdutos();
+}
 
+public listagemVIEW(ProdutosDTO produtos) {
+    initComponents();
+    this.product = (produtos != null) ? produtos : new ProdutosDTO();
+    listarProdutos();
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,12 +143,19 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+        
+        try{
+        
+       this.product.setId( Integer.parseInt(id_produto_venda.getText())) ;
         
         ProdutosDAO produtosdao = new ProdutosDAO();
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
+        produtosdao.venderProduto(this.product);
         listarProdutos();
+        } catch (NumberFormatException e) {
+    System.out.println("Erro: Entrada não é um inteiro válido.");
+     JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido.");
+}
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed

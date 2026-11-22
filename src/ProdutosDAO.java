@@ -79,6 +79,31 @@ public class ProdutosDAO {
     }
     
     
+public void venderProduto( ProdutosDTO products) {
+    String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+
+    try (Connection conn = conectaDAO.connectDB();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, products.getId());
+
+        int linhasAfetadas = stmt.executeUpdate();
+
+        if (linhasAfetadas > 0) {
+            System.out.println("-> Produto vendido com sucesso!");
+            JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto nao encontrado para o ID informado.");
+        }
+
+    } catch (SQLException ex) {
+        Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + ex.getMessage());
+    }
+}
+    
+    
+    
     
     
 }
