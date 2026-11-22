@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ProdutosDAO {
@@ -40,6 +42,7 @@ public class ProdutosDAO {
         
         if (linhasAfetadas > 0) {
             System.out.println("->Cadastro concluido  com sucesso!");
+             JOptionPane.showMessageDialog(null, "Cadastro concluido  com sucesso!"); 
         }
         
     } catch (SQLException e) {
@@ -49,12 +52,34 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+    String sql = "SELECT id, nome, valor, status FROM produtos";
+
+    try (Connection conn = conectaDAO.connectDB();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
         
-        return listagem;
+        while(rs.next()){
+        ProdutosDTO dto = new ProdutosDTO();
+        
+        dto.setId(rs.getInt("id"));
+        dto.setNome(rs.getString("nome"));
+        dto.setValor(rs.getInt("valor"));
+        dto.setStatus(rs.getString("status"));
+        listagem.add(dto);
+        
+        
+        }
+        
+        
+    }   catch (SQLException ex) {
+            Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      return listagem;
     }
     
     
     
-        
+    
 }
 
