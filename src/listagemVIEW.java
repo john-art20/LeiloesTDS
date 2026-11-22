@@ -151,7 +151,28 @@ public listagemVIEW(ProdutosDTO produtos) {
         ProdutosDAO produtosdao = new ProdutosDAO();
         
         produtosdao.venderProduto(this.product);
+        ProdutosDTO produtoEncontrado = produtosdao.buscarProdutoPorId(this.product);
+        
+       if (produtoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Produto nao encontrado para o ID informado.");
+        } else if ("Vendido".equalsIgnoreCase(produtoEncontrado.getStatus())) {
+            JOptionPane.showMessageDialog(null, "Este produto  foi vendido!");
+        } else if ("A venda".equalsIgnoreCase(produtoEncontrado.getStatus())
+                || "À venda".equalsIgnoreCase(produtoEncontrado.getStatus())) {
+            produtosdao.venderProduto(produtoEncontrado);
+            listarProdutos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Status do produto nao reconhecido: " + produtoEncontrado.getStatus());
+        }
+    
+
+
+produtosdao.venderProduto(produtoEncontrado);
+
         listarProdutos();
+        
+        id_produto_venda.setText("");
+        id_produto_venda.requestFocus();
         } catch (NumberFormatException e) {
     System.out.println("Erro: Entrada não é um inteiro válido.");
      JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido.");

@@ -78,6 +78,31 @@ public class ProdutosDAO {
       return listagem;
     }
     
+    public ProdutosDTO buscarProdutoPorId(ProdutosDTO products) {
+    String sql = "SELECT id, nome, valor, status FROM produtos WHERE id = ?";
+
+    try (Connection conn = conectaDAO.connectDB();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, products.getId());
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                ProdutosDTO dto = new ProdutosDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setValor(rs.getInt("valor"));
+                dto.setStatus(rs.getString("status"));
+                return dto;
+            }
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao buscar produto: " + e.getMessage());
+    }
+
+    return null;
+}
     
 public void venderProduto( ProdutosDTO products) {
     String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
@@ -91,11 +116,7 @@ public void venderProduto( ProdutosDTO products) {
 
         if (linhasAfetadas > 0) {
             System.out.println("-> Produto vendido com sucesso!");
-            JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Produto nao encontrado para o ID informado.");
         }
-
     } catch (SQLException ex) {
         Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
         JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + ex.getMessage());
