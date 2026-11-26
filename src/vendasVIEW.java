@@ -138,7 +138,46 @@ public class vendasVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+try {
+    String texto = txtPesquisar.getText().trim();
+    Integer pesquisar = texto.isEmpty() ? null : Integer.parseInt(texto);
 
+    if (this.product == null) {
+        this.product = new ProdutosDTO();
+    }
+    if (pesquisar != null) {
+        this.product.setId(pesquisar);
+    }
+
+    ProdutosDAO produtosdao = new ProdutosDAO();
+    ArrayList<ProdutosDTO> listaProdutos = produtosdao.buscarVendas(pesquisar);
+
+    DefaultTableModel tabelaVendas = (DefaultTableModel) tblVendas.getModel();
+    tblVendas.setRowSorter(new TableRowSorter<>(tabelaVendas));
+    tabelaVendas.setNumRows(0);
+    
+    if (listaProdutos.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado para a pesquisa informada.");
+        txtPesquisar.setText("");
+        txtPesquisar.requestFocus();
+        return;
+    }
+
+    for (ProdutosDTO p : listaProdutos) {
+        Object[] obj = new Object[]{
+            p.getId(),
+            p.getNome(),
+            p.getValor(),
+            p.getStatus()
+        };
+        tabelaVendas.addRow(obj);
+    }
+    txtPesquisar.setText("");
+        txtPesquisar.requestFocus();
+
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(null, "Digite um número inteiro válido para pesquisar.");
+}
         
     }//GEN-LAST:event_btnConsultarActionPerformed
 

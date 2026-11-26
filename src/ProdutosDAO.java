@@ -123,9 +123,36 @@ public void venderProduto( ProdutosDTO products) {
     }
 }
 
+public ArrayList<ProdutosDTO> buscarVendas(Integer idPesquisa) {
+    ArrayList<ProdutosDTO> lista = new ArrayList<>();
+    String sql = (idPesquisa == null)
+            ? "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'"
+            : "SELECT id, nome, valor, status FROM produtos WHERE id = ? AND status = 'Vendido'";
 
+    try (Connection conn = conectaDAO.connectDB();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        if (idPesquisa != null) {
+            stmt.setInt(1, idPesquisa);
+        }
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                ProdutosDTO dto = new ProdutosDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setValor(rs.getInt("valor"));
+                dto.setStatus(rs.getString("status"));
+                lista.add(dto);
+            }
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Erro ao consultar produtos: " + ex.getMessage());
+    }
+
+    return lista;
 
     
-    
-}
+}}
 
