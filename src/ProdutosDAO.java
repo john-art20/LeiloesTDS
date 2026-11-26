@@ -122,9 +122,9 @@ public void venderProduto( ProdutosDTO products) {
         JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + ex.getMessage());
     }
 }
-    
-    
-    
+
+
+
     
     
 }

@@ -159,7 +159,8 @@ try{        ProdutosDTO produto = new ProdutosDTO();
         cadastroNome.requestFocus();
          } catch (NumberFormatException e) {
     System.out.println("Erro: Entrada não é um inteiro válido.");
-     JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido.");
+     JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido."
+             + "Coloque números sem vírgula ou pontos");
 }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed

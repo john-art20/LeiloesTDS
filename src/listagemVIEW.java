@@ -175,13 +175,14 @@ produtosdao.venderProduto(produtoEncontrado);
         id_produto_venda.requestFocus();
         } catch (NumberFormatException e) {
     System.out.println("Erro: Entrada não é um inteiro válido.");
-     JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido.");
+     JOptionPane.showMessageDialog(null, "Erro: Entrada não  um  número inteiro válido."
+             + "Coloque números sem vírgula ou pontos");
 }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+        vendasVIEW vendas = new vendasVIEW(product); 
+        vendas.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
